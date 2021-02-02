@@ -1,6 +1,8 @@
 # freezify
 
-freezify enable freeze(d) 3rd party class.
+freezify can freeze(d) 3rd party class.
+
+[freezed](https://github.com/rrousselGit/freezed)
 
 ## Getting Started
 
