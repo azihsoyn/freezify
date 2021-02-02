@@ -1,8 +1,8 @@
 name: freezify_annotation
 description: A new Flutter package.
 version: 0.0.1
-author:
-homepage:
+author: azihsoyn <azihsoyn@gmail.com>
+homepage: https://github.com/azihsoyn/freezify
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

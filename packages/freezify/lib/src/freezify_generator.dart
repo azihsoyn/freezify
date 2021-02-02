@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
@@ -9,52 +11,28 @@ class FreezifyGenerator extends GeneratorForAnnotation<Freezify> {
   @override
   FutureOr<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
-    print(
-        "element: ${element.id}, ${element.displayName}, ${element.documentationComment}, ${element.kind.displayName}, ${element.library.imports}, ${element.source.fullName}");
     final _element = element as ExtensionElement;
-    print("---------------fields start------------");
-    for (final field in _element.fields) {
-      print("field: ${field}");
-    }
-    print("---------------fields end------------");
-    print(_element.extendedType);
-    print(_element.methods);
-    print(_element.accessors);
     final extendedElem = _element.extendedType.element as ClassElement;
     var _fields = '';
     var _fieldArgs = '';
-    print("---------------fields start------------");
     for (final field in extendedElem.fields) {
-      print("extendedElem field: ${field}");
-      print("extendedElem field.displayName: ${field.displayName}");
-      _fields += field.toString() + ',\n';
+      // workaround
+      final _type = field.type.toString().replaceAll("*", "");
+      _fields += '${_type} ${field.displayName},\n';
       _fieldArgs += '${field.displayName}: self.${field.displayName},\n';
     }
-    print("---------------fields end------------");
-    /*
-    final _element = element as ClassElement;
-    for (final constructor in _element.constructors) {
-      print("constructor: ${constructor.isPublic}");
-    }
-    for (final field in _element.fields) {
-      print("field.isFinal: ${field.isFinal}");
-      print("field.type: ${field.type}");
-      print("field.displayName: ${field.displayName}");
-    }
-    print("annotation: ${annotation}");
-    print("buildSte: ${buildStep}");
-
-     */
+    // workaround
+    final _extendedType = _element.extendedType.toString().replaceAll("*", "");
     return '''
 
 @freezed
-abstract class Freezed${_element.extendedType} implements _\$Freezed${_element.extendedType} {
-  const Freezed${_element.extendedType}._();
-  factory Freezed${_element.extendedType}({
+abstract class Freezed${_extendedType} implements _\$Freezed${_extendedType} {
+  const Freezed${_extendedType}._();
+  factory Freezed${_extendedType}({
     ${_fields}
-  }) = _Freezed${_element.extendedType};
+  }) = _Freezed${_extendedType};
 
-  factory Freezed${_element.extendedType}._\$From(${_element.extendedType} self) => Freezed${_element.extendedType}(
+  factory Freezed${_extendedType}._\$From(${_extendedType} self) => Freezed${_extendedType}(
       ${_fieldArgs});
 }
     ''';
