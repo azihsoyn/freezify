@@ -1,0 +1,8 @@
+builders:
+  freezify:
+    import: "package:freezify/builder.dart"
+    builder_factories: ["freezify"]
+    build_extensions: { ".dart": [".freezify.dart"] }
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["freezed:freezed", "json_serializable|json_serializable"]
